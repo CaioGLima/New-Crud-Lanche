@@ -1,0 +1,106 @@
+while true:
+  print("1.Deseja cadastrar novo produto? ")#(código inteiro, nome, preço,ativo=True).
+  print("2.Atualizar um produto existente")
+  print("3.Listar produtos")
+  print("4.Registrar pedido cliente") #adiciona itens por código, pergunta cupom e taxa;calcula totais e salva em pedidos.
+  print("5.Gerar relatorio")
+  print("6.Sair")
+
+produtos = {}
+def cadastrar_produto(produtos):
+  codigo = int(input("Qual o codigo do produto?: "))
+  nome = input("Digite o nome do produto: ")
+  preco = float(input("Insira o preço do produto: "))
+
+  produtos[codigo] =
+  {
+        'nome': nome,
+        'preco': preco,
+        'ativo': True,
+        'vendidos': 0
+  }
+
+  print(f"Produto '{nome}' cadastrado com sucesso!")
+
+
+#peço o codigo do produto ---> atualiza o nome, preço e estado(ativo/inativo)
+def atualizar_produto(produtos):
+  codigo = int(input("Digite o código do produto que deseja atualizar: "))
+
+  if codigo not in produtos:
+    print("Produto não existente")
+    return
+
+  nome = input("Digite o novo nome do produto: ")
+  preco = float(input("Insira o novo preço do produto: "))
+  ativo_input = input("O produto está ativo? (S/N): ").strip().upper()
+  ativo = True if ativo_input == "S" else False
+
+  produtos[codigo]['nome'] = nome
+  produtos[codigo]['preco'] = preco
+  produtos[codigo]['ativo'] = ativo
+
+  print(f"Produto {codigo} atualizado com sucesso!")
+
+def listar_produtos(produtos):
+  if not produtos:
+    print("Nenhum produto cadastrado.")
+    return
+
+  print("\n--- LISTA DE PRODUTOS ---")
+    for codigo, info in produtos.items():
+        status = "Ativo" if info['ativo'] else "Inativo"
+        print(f"Código: {codigo} | Nome: {info['nome']:<20} | Preço: R$ {info['preco']:.2f} | Status: {status}")
+
+#registra pedido pelo codigo do produto. Pergunta cupom e taxa. Calculo total e salva em pedidos
+def registrar_pedido(produtos, pedidos):
+  itens = []
+  subtotal = 0
+
+  while True:
+    codigo = int(input("Digite o codigo do produto(caso precise cancelar digite 0): "))
+    if codigo ==0:
+      break
+    if codigo not in produtos or not produtos[codigo]['ativo']:
+      print("Produto invalido")
+      continue
+
+    qtd = int(input("Quantidade: "))
+    preco_unit = produtos[codigo]['preco']
+    itens.append((codigo, qtd, preco_unit))
+    subtotal += preco_unit * qtd
+
+  if not itens:
+    print("Nenhum item adicionado. ")
+    return
+
+  cupom_int = input("Possui cupom de desconto? (S/N: ").strip().upper()
+  desconto = subtotal *0.10 if cupom_input == "S" else 0
+
+  taxa_input = input("Deseja adicionar taxa de serviço(8%)? (S/N): ").strip().upper()
+  taxa = subtotal *0.08 if taxa_input == "S" else 0
+
+  total = subtotal - desconto + taxa
+
+    pedidos.append({
+        'itens': itens,
+        'subtotal': subtotal,
+        'desconto': desconto,
+        'taxa': taxa,
+        'total': total
+    })
+
+    print(f"Pedido registrado com sucesso! Total: R$ {total:.2f}")
+
+
+
+#usar def para cada item no menu
+#criar diciionario fora e vazio
+#produto[produto] = valor
+#def listar_produto()
+#for produto in produtos
+#print(produto)
+
+#para o pedido, vc cria uma lista caixa [] e usa .append
+
+#futura melhorias usar o supabase para conectar um BD
